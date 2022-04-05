@@ -31,6 +31,7 @@ public class PracticeFormTests {
         String gender = "Male";
         String phone = "9199960164";
         String subject = "Physics";
+        String hobbies = "Sports";
         String imagePath = "img/Avatar.jpg";
         String address = "Komsa street 11, 15 apt.";
         String state = "Haryana";
@@ -47,7 +48,7 @@ public class PracticeFormTests {
         $(".react-datepicker__year-select").selectOption("1992");
         $(byText("16")).click();
         $("#subjectsInput").setValue(subject).pressEnter();
-        $("#hobbiesWrapper").$(byText("Sports")).click();
+        $("#hobbiesWrapper").$(byText(hobbies)).click();
         $("#uploadPicture").uploadFromClasspath(imagePath);
         $("#currentAddress").setValue(address);
         $("#state").scrollTo();
@@ -67,7 +68,7 @@ public class PracticeFormTests {
                 text("Mobile " + phone),
                 text("Date of Birth 16 June,1992"),
                 text("Subjects " + subject),
-                text("Hobbies Sports"),
+                text("Hobbies " + hobbies),
                 text("Picture Avatar.jpg"),
                 text("Address " + address),
                 text("State and City " + state + " " + city));
