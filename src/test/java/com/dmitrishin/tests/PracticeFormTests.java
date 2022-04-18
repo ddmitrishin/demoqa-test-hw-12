@@ -1,6 +1,8 @@
-package com.dmitrishin;
+package com.dmitrishin.tests;
 
 import com.codeborne.selenide.Configuration;
+import com.dmitrishin.data.GenerateData;
+import com.dmitrishin.pages.RegistrationFormPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +11,8 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PracticeFormTests {
+    RegistrationFormPage registrationFormPage = new RegistrationFormPage();
+    GenerateData generate = new GenerateData();
 
     @BeforeAll
     static void setUp() {
@@ -20,12 +24,8 @@ public class PracticeFormTests {
     @Test
     void fillPracticeFormTest() {
 
-        open("/automation-practice-form");
-        executeJavaScript("$('footer').remove()");
-        executeJavaScript("$('#fixedban').remove()");
-
         //Input parameters
-        String firstName = "Dima";
+        String firstName = generate.getFirstName();
         String lastName = "Dmitrishin";
         String email = "test@example.com";
         String gender = "Male";
@@ -37,18 +37,9 @@ public class PracticeFormTests {
         String state = "Haryana";
         String city = "Karnal";
 
-        //Fill form
-        $("#firstName").setValue(firstName);
-        $("#lastName").setValue(lastName);
-        $("#userEmail").setValue(email);
-        $("#genterWrapper").$(byText(gender)).click();
-        $("#userNumber").setValue(phone);
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("June");
-        $(".react-datepicker__year-select").selectOption("1992");
-        $(byText("16")).click();
-        $("#subjectsInput").setValue(subject).pressEnter();
-        $("#hobbiesWrapper").$(byText(hobbies)).click();
+        //registrationFormPage.openPage().setFirstName("LALA");
+        registrationFormPage.openPage();
+        $("#firstName").setValue("fasa");
         $("#uploadPicture").uploadFromClasspath(imagePath);
         $("#currentAddress").setValue(address);
         $("#state").scrollTo();
@@ -72,6 +63,8 @@ public class PracticeFormTests {
                 text("Picture Avatar.jpg"),
                 text("Address " + address),
                 text("State and City " + state + " " + city));
+
+        //($(".table-responsive").$(byText(key))).parent().shouldHave(text(value));
 
         $("#closeLargeModal").click();
     }
