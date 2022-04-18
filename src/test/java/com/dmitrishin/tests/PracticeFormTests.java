@@ -6,14 +6,35 @@ import com.dmitrishin.pages.RegistrationFormPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static java.lang.String.format;
 
 public class PracticeFormTests {
 
     RegistrationFormPage registrationFormPage = new RegistrationFormPage();
     GenerateData generate = new GenerateData();
+
+    //Input parameters
+    String firstName = generate.firstname;
+    String lastName = generate.lastname;
+    String email = generate.email;
+    String gender = generate.setRandomGenderType();
+    String phone = generate.phoneNumber;
+    String dayOfBirth = generate.dayOfBirth;
+    String monthOfBirth = generate.monthOfBirth;
+    String yearOfBirth = generate.yearOfBirth;
+    String subject = generate.setRandomSubject();
+    String hobby = generate.setRandomHobbies();
+    String imagePath = "img/Avatar.jpg";
+    String address = generate.address;
+    String state = "NCR";
+    String city = "Delhi";
+    String resultTitle = "Thanks for submitting the form";
+
+    String fullName = format("%s %s", firstName, lastName);
+    String dateOfBirth = format("%s %s,%s", dayOfBirth, monthOfBirth, yearOfBirth);
+    String fileName = imagePath.substring(4);
+    String stateAndCity = format("%s %s", state, city);
+
 
     @BeforeAll
     static void setUp() {
@@ -25,48 +46,34 @@ public class PracticeFormTests {
     @Test
     void fillPracticeFormTest() {
 
-        //Input parameters
-        String firstName = generate.getFirstName();
-        String lastName = "Dmitrishin";
-        String email = "test@example.com";
-        String gender = "Male";
-        String phone = "9199960164";
-        String subject = "Physics";
-        String hobbies = "Sports";
-        String imagePath = "img/Avatar.jpg";
-        String address = "Komsa street 11, 15 apt.";
-        String state = "Haryana";
-        String city = "Karnal";
+        //Fill Form
+        registrationFormPage.openPage()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setGender(gender)
+                .setPhoneNumber(phone)
+                .setDate(dayOfBirth, monthOfBirth, yearOfBirth)
+                .setSubject(subject)
+                .setHobbies(hobby)
+                .setPath(imagePath)
+                .setAddress(address)
+                .setState(state)
+                .setCity(city)
+                .pressSubmit();
 
-        //registrationFormPage.openPage().setFirstName("LALA");
-        registrationFormPage.openPage();
-        $("#firstName").setValue("fasa");
-        $("#uploadPicture").uploadFromClasspath(imagePath);
-        $("#currentAddress").setValue(address);
-        $("#state").scrollTo();
-        $("#state").click();
-        $("#stateCity-wrapper").$(byText("Haryana")).click();
-        $("#city").click();
-        $("#stateCity-wrapper").$(byText("Karnal")).click();
-        $("#submit").click();
+        //Check results
+        registrationFormPage.checkResultTitle(resultTitle)
+                .checkResult("Student Name", fullName)
+                .checkResult("Student Email", email)
+                .checkResult("Gender", gender)
+                .checkResult("Mobile", phone)
+                .checkResult("Date of Birth", dateOfBirth)
+                .checkResult("Subjects", subject)
+                .checkResult("Hobbies", hobby)
+                .checkResult("Picture", fileName)
+                .checkResult("Address", address)
+                .checkResult("State and City", stateAndCity);
 
-        //Form validation
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(
-                text("Label Value"),
-                text("Student Name " + firstName + " " + lastName),
-                text("Student Email " + email),
-                text("Gender " + gender),
-                text("Mobile " + phone),
-                text("Date of Birth 16 June,1992"),
-                text("Subjects " + subject),
-                text("Hobbies " + hobbies),
-                text("Picture Avatar.jpg"),
-                text("Address " + address),
-                text("State and City " + state + " " + city));
-
-        //($(".table-responsive").$(byText(key))).parent().shouldHave(text(value));
-
-        $("#closeLargeModal").click();
     }
 }
