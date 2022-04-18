@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PracticeFormTests {
+
     RegistrationFormPage registrationFormPage = new RegistrationFormPage();
     GenerateData generate = new GenerateData();
 
